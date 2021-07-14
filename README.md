@@ -84,4 +84,4 @@ those that bring us closer to our own defeat are undesirable.
 The idea of ​​implementation based on bitboards was taken from the platform
 chessprogramming and on Youtube. Additional information about chess and work
 with bitboard were also taken from WinBoard Forum, Wikipedia, chessprogramming,
-and so on An online bitboard computer was also useful.
+and so on. An online bitboard computer was also useful.
