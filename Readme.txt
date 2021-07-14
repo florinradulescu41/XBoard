@@ -1,11 +1,3 @@
-README - Proiect PA 2020 - Etapa 1
-
-Echipa Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch, formata din:
-
-- Andrei-Ionut GHERGHE, 323CC - capitan de echipa
-- Robert-Emanoil NECSOIU, 323CC
-- Florin RADULESCU, 323CC
-
 1. Instrucțiuni de compilare:
 
 Programul compileaza sursele la comanda make. Aceeasi comanda are ca efect si
@@ -58,11 +50,3 @@ Ideea de implemenatre pe baza de bitboard-uri a fost preluata de pe platforma
 chessprogramming si de pe Youtube. Informatii suplimentare despre sah si lucrul
 cu bitboard au fost luate si de pe WinBoard Forum, Wikipedia, chessprogramming,
 etc.
-
-5. Responsabilitatea fiecărui membru al echipei:
-
-Implementarea a fost facuta in grup, atat in cadrul unor intalniri la camin,
-cat si pe Discord sau Teams. Fiecare membru a parcurs mai multe surse de
-informare si a participat cu idei, pareri si sugestii la implemenatrea propriu-
-zisa a codului. Codul a fost discutat in grup la fiecare pas, iar deciziile de
-implementare au fost luate la comun.
