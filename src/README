@@ -1,112 +1,87 @@
-README - Proiect PA 2020 - Etapa 2
+1. Compilation instructions:
 
-Echipa Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch, formata din:
+The program compiles the sources to the make command. The same command has the effect and
+start the created executable, which starts running Xboard. From this point it is
+made the opening of the Xboard interface, loading the engine and starting
+the possibility to transmit its commands through the graphical interface (moves
+made on the chessboard).
 
-- Andrei-Ionut GHERGHE, 323CC - capitan de echipa
-- Robert-Emanoil NECSOIU, 323CC
-- Florin RADULESCU, 323CC
+2. Details about the project structure:
 
-1. Instrucțiuni de compilare:
+The project uses bitboards as a basis, which are some encodings of
+chessboard depending on its occupation with pieces, possible places in
+which they can move or attack, based on bits (1 or 0).
 
-Programul compileaza sursele la comanda make. Aceeasi comanda are ca efect si
-pornirea executabilului creat, care incepe rularea Xboard. Din acest punct este
-realizata decshiderea interfetei Xboard, incarcarea engine-ului si inceperea
-posibilitatii de a transmite comenzi acestuia prin interfata grafica (mutari
-facute pe tabla de sah).
+The engine is composed of several files with code written in C ++, as
+to be listed below:
 
-2. Detalii despre structura proiectului:
+- main.cpp contains only the main function, which starts and starts the game;
 
-Proiectul foloseste ca baza bitboard-urile, care sunt niste codificari ale
-tablei de sah in functie de ocuparea acesteia cu piese, locuri posibile in
-care acestea se pot muta sau pot ataca, pe baza de biti (1 sau 0).
+- game.cpp, where several command possibilities are declared during
+execution and running. The Game class contains a do-while in which they are
+constantly analyzed the possible commands that the engine can receive / process
+(xboard, protover, new, black etc.); important variables are of type
+BitboardInteraction, Move and PieceMover, which we will detail later;
 
-Engine-ul este compus din mai multe fisiere cu cod scris in C++, dupa cum
-urmeaza a fi listate mai jos:
+- bitboard.cpp contains the implementation of the bitboard structure. defining
+RANK and FILE variables constitute the globalization of line attributes and
+rows of chessboard. Bitboards being a coding of all spaces
+on the chessboard, have the shape of an unsigned long long (64 bits, 1 bit for
+each square of the board). The Bitboard class has an enumeration that encodes mode
+classic (columns a to h, rows 1 to 8) chessboard boxes;
+the update function has the role of reloading the bitboards after executing a
+mutari; it is used by setMove, which receives a move that
+the previously identified piece can do it; parts and groups of parts
+of the same type or color have the bitboards declared separately; the moves are
+interpreted as checks and changes of bits (shifts) within
+different bitboards; these are specified in the pieces.cpp file;
+getTotal assigns the pieces on the board a score and returns the total that
+the color given as a parameter holds it; the score will be used as the mode
+calculation of the best moves, depending on the eval - more details at
+the part about the algorithmic approach;
 
-- main.cpp contine doar functia main, care porneste si strege jocul;
+- moves.cpp, Move class only;
 
-- game.cpp, unde sunt declarate mai multe posibilitati de comanda pe parcursul
-executiei si rularii. Clasa Game contine un do-while in cadrul caruia sunt
-analizate constant posibilele comezi pe care engine-ul le poate primi/procesa
-(xboard, protover, new, black etc.); variabile importante sunt de tip
-BitboardInteraction, Move si PieceMover, pe care le vom detalia ulterior;
-
-- bitboard.cpp contine implementarea structurii de bitboard. Definirea
-unor variabile de RANK si FILE constituie globalizarea atributelor de linii si
-randuri ale tablei de sah. Bitboardurile fiind o codificare a tuturor spatiilor
-de pe tabla de sah, au forma unui unsigned long long (64 de biti, 1 bit pentru
-fiecare casuta a tablei). Clasa Bitboard are o enumerare ce codifica in mod
-clasic (coloanele de la a la h, randurile de la 1 la 8) casutele tablei de sah;
-functia de update are rolul de a reincarca bitboard-urile dupa executarea unei
-mutari; ea este folosita de catre setMove, care primeste o mutare pe care o 
-piesa identificata in prealabil o poate face; piesele si grupurile de piese
-de acelasi fel sau culoare au bitboard-urile declarate separat; mutarile sunt
-intrepretate ca verificari si schimbari ale bitilor (shiftari) in cadrul
-diferitelor bitboard-uri; acestea sunt explicitate in fisierul pieces.cpp;
-getTotal asigneaza pieselor de pe tabla un scor si intoarce totalul pe care
-culoarea data ca parametru il detine; scorul va fi folosit ca modalitatea de
-computatie a celor mai bune mutari, in functia eval - mai multe detalii la
-partea despre abordarea algoritmica;
-
-- moves.cpp, doar clasa Move;
-
-- pieces.cpp, contine operatiile de baza ale sahului ca joc, gandite pentru
-a putea fi interpretate de o masina de calcul; Dir e o enumeratie a directiilor
-pe care piesele se pot muta (ex: north - avansare pe tabla; west - miscare in
-lateral etc.); clasa PieceMover contine atat functii de returnare a unei
-pozitii curente, cat si de calcul a unor pozitii viitoare; fiecare directie
-este la randul ei reprezentata ca o shiftare a bitilor din bitboard; functia
-getMoves are rolul de a genera, pentru o anumita piesa, toate mutarile posibile
-si de a stoca aceste mutari intr-un vector ce va fi analizat ulterior de catre
-negamax; aceste generari sunt facute separat in functiile particulare de
-getMoves (ex: getWhitePawnMoves, getKnightMoves etc.); fiecare dintre aceste
-functii particulare foloseste o modalitate de calcul proprie a pozitiilor de
-miscare/atac viitoare/posibile in functie de specificul piesei asignate in
-jocul de sah si regulile acestuia; spre exemplu, un cal se poate muta oriunde
-in cele 8 casute formate de L-ul specific miscarii sale unice, pentru a ocupa
-sau captura o zona pe tabla, indiferent de pisele din jur, dar un nebun sau
-o tura se limiteaza la miscari pana se pot lovi de o alta piesa, fara a putea
-trece in spatele ei; acesti vectori de mutari generati vor fi folositi in a
-analiza cele mai bune solutii pentru o stare curenta de catre algoritmul de tip
-negamax; 
+- pieces.cpp, contains the basic operations of chess as a game, designed for
+can be interpreted by a computing machine; Dir is an enumeration of directions
+on which the pieces can move (ex: north - advancing on the board; west - moving in
+lateral etc.); The PieceMover class contains both return functions
+current positions, as well as the calculation of future positions; each direction
+it is in turn represented as a shift of the bits in the bitboard; function
+getMoves has the role of generating, for a certain song, all possible moves
+and to store these moves in a vector that will be analyzed later by
+negamax; these generations are made separately in the particular functions of
+getMoves (ex: getWhitePawnMoves, getKnightMoves etc.); each of these
+Particular functions use a method of calculating their own positions
+future / possible movement / attack depending on the specifics of the piece assigned in
+the game of chess and its rules; for example, a horse can move anywhere
+in the 8 houses formed by the L specific to its unique movement, to occupy
+or capture an area on the board, regardless of the surrounding fish, but a madman or
+one turn is limited to movements until they can hit another piece, without being able to
+passes behind her; these generated move vectors will be used in a
+analysis of the best solutions for a current state by the type algorithm
+negamax;
 
 
-3. Detalii despre abordarea algoritmică (algoritmi folositi, complexitati)
+3. Details about the algorithmic approach (algorithms used, complexities)
 
-Algorimul ales pentru aceasta etapa este un negamax optimizat alfa-beta, care
-analizeaza cele mai bune mutari creand situatii ipotetice rezulate in cazul
-in care ambii jucatori joaca optim, intr-un depth dat; acestea sunt evaluate
-folosind functia de evaluare si scorurile asignate pieselor, cat si scorurile
-pentru diverse pozitii-cheie ale pieselor. Unele piese sau pozitii ale lor sunt
-mai valoroase, deci capturarea lor ar putea insemna un castig. De asemenea, o
-mutare care duce regele adversarului in sah este considerata o mutare destul de
-buna, pe cand o mutare care duce propriul rege in sah este inacceptabila;
-Scorul este reprezentat de o diferenta dintre piesele jucatorului curent si
-cele ale adversarului, iar scopul algoritmului este de a face engine-ul sa isi
-maximizeze scorul propriu, acest rezultat aducandu-ne mai aproape de victorie.
-Situatiile optime pentru sah mat vor fi luate in calcul si preferate, pe cand
-cele care ne aduc mai aproape de infrangerea proprie sunt de nedorit.
+The algorithm chosen for this stage is an alpha-beta optimized negamax, which
+analyzes the best moves creating hypothetical situations resulting in the case
+in which both players play optimally, in a given depth; they are evaluated
+using the evaluation function and the scores assigned to the pieces, as well as the scores
+for various key positions of the parts. Some of their pieces or positions are
+more valuable, so capturing them could mean a gain. Also a
+The move that leads the opponent's king to chess is considered quite a move
+good, while a move that brings one's own king into chess is unacceptable;
+The score is represented by a difference between the current player's pieces and
+those of the opponent, and the purpose of the algorithm is to make the engine
+maximize your own score, this result bringing us closer to victory.
+The best situations for checkmate chess will be considered and preferred, meanwhile
+those that bring us closer to our own defeat are undesirable.
 
-4. Surse de inspirație
+4. Sources of inspiration
 
-Ideea de implemenatre pe baza de bitboard-uri a fost preluata de pe platforma
-chessprogramming si de pe Youtube. Informatii suplimentare despre sah si lucrul
-cu bitboard au fost luate si de pe WinBoard Forum, Wikipedia, chessprogramming,
-etc. De asemenea, util a fost si un calculator de bitboard online.
-
-5. Responsabilitatea fiecărui membru al echipei:
-
-Implementarea a fost facuta in grup, in cadrul unor sedinte video interactive
-pe Discord sau Teams. Fiecare membru a parcurs mai multe surse de informare si
-a participat cu idei, pareri si sugestii la implemenatrea propriu-zisa a
-codului. Codul a fost discutat in grup la fiecare pas, iar deciziile de
-implementare au fost luate la comun in cadrul sedintelor de scriere cod, de
-catre toti cei trei membri ai echipei. Codul a fost scris concomitent sau
-alternativ de pe device-uri diferite in acelasi fisier comun, prin Visual
-Studio Live Share, in cadrul sedintelor de grup, de catre Andrei si Robert.
-Analiza algoritmului a fost facuta la comun, cu cea mai reprezentativa
-contibutie in cadrul implementarii logicii de programare, a functiilor si a
-algoritmicii negamax fiind atribuita lui Andrei si Robert. Specificatiile de
-reprezentare si analiza a situatiilor specifice sahului, evaluarii, logicii
-shiftarilor pentru mutarile pieselor, cat si readme-ul, au reprezentat
-contributia lui Florin.
+The idea of ​​implementation based on bitboards was taken from the platform
+chessprogramming and on Youtube. Additional information about chess and work
+with bitboard were also taken from WinBoard Forum, Wikipedia, chessprogramming,
+and so on An online bitboard computer was also useful.
