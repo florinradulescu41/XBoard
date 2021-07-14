@@ -1,52 +1,52 @@
-1. Instrucțiuni de compilare:
+1. Compilation instructions:
 
-Programul compileaza sursele la comanda make. Aceeasi comanda are ca efect si
-pornirea executabilului creat, care incepe rularea Xboard. Din acest punct este
-realizata decshiderea interfetei Xboard, incarcarea engine-ului si inceperea
-posibilitatii de a transmite comenzi acestuia prin interfata grafica (mutari
-facute pe tabla de sah).
+The program compiles the sources to the make command. The same command has the effect and
+start the created executable, which starts running Xboard. From this point it is
+made the opening of the Xboard interface, loading the engine and starting
+the possibility to transmit its commands through the graphical interface (moves
+made on the chessboard).
 
-2. Detalii despre structura proiectului:
+2. Details about the project structure:
 
-Proiectul foloseste ca baza bitboard-urile, care sunt niste codificari ale
-tablei de sah in functie de ocuparea acesteia cu piese, locuri posibile in
-care acestea se pot muta sau pot ataca, pe baza de biti (1 sau 0).
-Principiile acestei structuri pe baza de bitboard vor fi explicate peste
-un paragraf, cand vorbim despre fisierul bitboard.cpp.
+The project uses bitboards as a basis, which are some encodings of
+chessboard depending on its occupation with pieces, possible places in
+which they can move or attack, based on bits (1 or 0).
+The principles of this bitboard-based structure will be explained above
+a paragraph, when we talk about the bitboard.cpp file.
 
-Engine-ul este compus din mai multe fisiere cu cod scris in C++. Primul dintre
-ele, main.cpp, contine doar functia main, care porneste jocul.
-Acest fisier foloseste game.cpp, unde sunt declarate mai multe posibilitati
-de comanda pe parcursul executiei si rularii. Clasa Game contine un do-while
-in cadrul caruia sunt analizate constant posibilele comezi pe care engine-ul
-le poate primi si procesa (xboard, protover, new, black etc.)
+The engine consists of several files with code written in C ++. The first of
+they, main.cpp, contain only the main function, which starts the game.
+This file uses game.cpp, where several possibilities are declared
+command during execution and running. Game class contains a do-while
+in which the possible commands that the engine is constantly analyzed
+can receive them and process them (xboard, protover, new, black, etc.)
 
-Fisierul bitboard.cpp contine implementarea structurii de bitboard. Definirea
-unor variabile de RANK si FILE constituie globalizarea atributelor de linii si
-randuri ale tablei de sah. Bitboardurile fiind o codificare a tuturor spatiilor
-de pe tabla de sah, au forma unui unsigned long long (64 de biti, 1 bit pentru
-fiecare casuta a tablei). Clasa Bitboard are o enumerare ce codifica in mod
-clasic (coloanele de la a la h, randurile de la 1 la 8) casutele tablei.
-Functia de update are rolul de a reincarca bitboard-urile dupa executarea unei
-mutari. Ea este folosita de catre setMove, care primeste o mutare pe care o 
-piesa identificata in prealabil o poate face. Piesele si grupurile de piese
-de acelasi fel sau culoare au bitboard-urile declarate separat. Mutarile sunt
-intrepretate ca verificari si schimbari ale bitilor (shiftari) in cadrul
-diferitelor bitboard-uri. Acestea sunt explicitate in fisierul pieces.cpp.
+The bitboard.cpp file contains the implementation of the bitboard structure. defining
+RANK and FILE variables constitute the globalization of line attributes and
+rows of chessboard. Bitboards being a coding of all spaces
+on the chessboard, have the shape of an unsigned long long (64 bits, 1 bit for
+each square of the board). The Bitboard class has an enumeration that encodes mode
+classic (columns from a to h, rows 1 to 8) tin boxes.
+The update function has the role of reloading the bitboards after executing one
+mutari. It is used by setMove, which receives a move
+the previously identified piece can do it. Parts and groups of parts
+of the same type or color have the bitboards declared separately. The moves are
+interpreted as checks and changes of bits (shifts) within
+different bitboards. These are made explicit in the pieces.cpp file.
 
-3. Detalii despre abordarea algoritmică (algoritmi folositi, complexitati)
+3. Details about the algorithmic approach (algorithms used, complexities)
 
-Momentan nu e cazul. Enigine-ul asteapta comenzi de la xboard/utilizator, le
-interpreteaza si raspunde. In cazul in care trebuie sa faca o mutare, foloseste
-bitboard-urile pentru a vedea ce mutari poate face. In cazul pionilor, spre
-exemplu, engine-ul verifica piesele (pionii) ce pot fi mutati, pozitiile
-actuale ale acestora si pozitiile pe care le pot ocupa. Din cele din urma,
-alege o pozitie si face o mutare valida. In cazul in care nu mai poate face
-nicio mutare valida, acesta da resign si jocul se termina.
+This is not the case at the moment. Enigine expects commands from xboard / user, le
+interpret and answer. If you have to make a move, use it
+bitboards to see what moves it can make. In the case of pawns, towards
+for example, the engine checks the parts (pawns) that can be moved, the positions
+their current positions and the positions they can hold. Finally,
+choose a position and make a valid move. If he can't do it anymore
+no valid move, it resigns and the game ends.
 
-4. Surse de inspirație
+4. Sources of inspiration
 
-Ideea de implemenatre pe baza de bitboard-uri a fost preluata de pe platforma
-chessprogramming si de pe Youtube. Informatii suplimentare despre sah si lucrul
-cu bitboard au fost luate si de pe WinBoard Forum, Wikipedia, chessprogramming,
-etc.
+The idea of implementation based on bitboards was taken from the platform
+chessprogramming and on Youtube. Additional information about chess and work
+with bitboard were also taken from WinBoard Forum, Wikipedia, chessprogramming,
+and so on
